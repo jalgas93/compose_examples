@@ -43,10 +43,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,10 +74,93 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            val state = viewModel.state.value
 
             Compose_1Theme {
-                Column(
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    contentAlignment = Alignment.Center
+                ) {
+
+                    val annotatedString = buildAnnotatedString {
+                        blueGradientText("NEW")
+                        append("\n\n")
+                        pinkBlueGradientText("Gradient")
+                        append("\n\n")
+                        blueGradientText("text")
+                    }
+                    Text(text = annotatedString)
+
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalTextApi::class)
+    private fun AnnotatedString.Builder.blueGradientText(text: String) {
+        withStyle(
+            style = SpanStyle(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF2788C7),
+                        Color(0xFF00BB04)
+                    )
+                ),
+                fontSize = 42.sp,
+                fontWeight = FontWeight.Medium
+            )
+        ) {
+            append(text)
+        }
+    }
+
+    @OptIn(ExperimentalTextApi::class)
+    private fun AnnotatedString.Builder.pinkBlueGradientText(text: String) {
+        withStyle(
+            style = SpanStyle(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF2788C7),
+                        Color(0xFF00BB04)
+                    )
+                ),
+                fontSize = 42.sp,
+                fontWeight = FontWeight.Medium
+            )
+        ) {
+            append(text)
+        }
+    }
+
+
+}
+
+@Composable
+fun MyTextField(
+    textValue: String,
+    onValueChanged: (String) -> Unit,
+    onAddClick: () -> Unit,
+) {
+    TextField(
+        value = textValue, onValueChange = {
+            onValueChanged(it)
+        }, modifier = Modifier.fillMaxWidth(),
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    onAddClick()
+                })
+        }
+    )
+}
+
+
+//val state = viewModel.state.value
+/*
+     Column(
                     modifier = Modifier.fillMaxSize(),
                 ) {
 
@@ -93,29 +186,4 @@ class MainActivity : ComponentActivity() {
                         }
                     )
                 }
-            }
-        }
-    }
-
-}
-
-@Composable
-fun MyTextField(
-    textValue: String,
-    onValueChanged: (String) -> Unit,
-    onAddClick: () -> Unit,
-) {
-    TextField(
-        value = textValue, onValueChange = {
-            onValueChanged(it)
-        }, modifier = Modifier.fillMaxWidth(),
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    onAddClick()
-                })
-        }
-    )
-}
+ */
