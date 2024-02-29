@@ -79,19 +79,19 @@ class MainActivity : ComponentActivity() {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Black),
-                    contentAlignment = Alignment.Center
+                        .background(Color.Black.copy(alpha = 0.8f)),
+                    contentAlignment = Alignment.Center,
                 ) {
-
-                    val annotatedString = buildAnnotatedString {
-                        blueGradientText("NEW")
-                        append("\n\n")
-                        pinkBlueGradientText("Gradient")
-                        append("\n\n")
-                        blueGradientText("text")
-                    }
-                    Text(text = annotatedString)
-
+                    MyCustomCard(
+                        image = R.drawable.ic_launcher_background,
+                        title = "Shadaw & Lightnings",
+                        text = "dsfsfdsfssssssssss dsfsfsdfs dflsdfljdlfjaljfldsjflajfljd;l d fjladsjfljlwejfljwelfjlkdjlfaj dfldjfljadlf lajf dlfajldfjldsalfjalfja",
+                        publisher = Publisher(
+                            name = "Ungarbaev Jalgas",
+                            job = "Mobile developer",
+                            image = R.drawable.ic_launcher_background
+                        )
+                    )
                 }
             }
         }
