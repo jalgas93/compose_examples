@@ -23,16 +23,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -62,128 +68,91 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import com.jetpack.myapplication.ui.theme.Compose_1Theme
-import com.jetpack.myapplication.ui.theme.Purple40
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 
 
 class MainActivity : ComponentActivity() {
-    val viewModel by lazy {
-        ViewModelProvider(this).get(MyViewModel::class.java)
-    }
-
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
-
             Compose_1Theme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.8f)),
-                    contentAlignment = Alignment.Center,
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    MyCustomCard(
-                        image = R.drawable.ic_launcher_background,
-                        title = "Shadaw & Lightnings",
-                        text = "dsfsfdsfssssssssss dsfsfsdfs dflsdfljdlfjaljfldsjflajfljd;l d fjladsjfljlwejfljwelfjlkdjlfaj dfldjfljadlf lajf dlfajldfjldsalfjalfja",
-                        publisher = Publisher(
-                            name = "Ungarbaev Jalgas",
-                            job = "Mobile developer",
-                            image = R.drawable.ic_launcher_background
-                        )
+                    var text by remember {
+                        mutableStateOf("")
+                    }
+
+                    var isPasswordVisible by remember {
+                        mutableStateOf(false)
+                    }
+
+                    val focusRequester = remember {
+                        FocusRequester()
+                    }
+
+                    OutlinedTextField(
+                        value = text,
+                        onValueChange = {
+                            text = it
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = androidx.core.R.drawable.ic_call_answer),
+                                contentDescription = null
+                            )
+                        },
+                        trailingIcon = {
+                            TextButton(onClick = {
+                                isPasswordVisible = !isPasswordVisible
+                            }) {
+                                Text(text = if (isPasswordVisible) "Hide" else "Show")
+                            }
+                        },
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = Color.Transparent,
+                            cursorColor = Color.Red,
+
+                            ),
+                        singleLine = true,
+                        placeholder = {
+                            Text(text = "password")
+
+                        },
+                        label = {
+                            Text(text = "password")
+                        },
+                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(
+                            autoCorrect = false,
+                            keyboardType = KeyboardType.NumberPassword,
+                            imeAction = ImeAction.Go
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onGo = {
+                                Log.d("test", "OnGo click")
+                            }
+                        ),
+                        modifier = Modifier.focusRequester(focusRequester)
                     )
+                    Button(onClick = { focusRequester.requestFocus() }) {
+                        Text(text = "Request focus")
+                    }
                 }
             }
         }
     }
-
-    @OptIn(ExperimentalTextApi::class)
-    private fun AnnotatedString.Builder.blueGradientText(text: String) {
-        withStyle(
-            style = SpanStyle(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF2788C7),
-                        Color(0xFF00BB04)
-                    )
-                ),
-                fontSize = 42.sp,
-                fontWeight = FontWeight.Medium
-            )
-        ) {
-            append(text)
-        }
-    }
-
-    @OptIn(ExperimentalTextApi::class)
-    private fun AnnotatedString.Builder.pinkBlueGradientText(text: String) {
-        withStyle(
-            style = SpanStyle(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFF2788C7),
-                        Color(0xFF00BB04)
-                    )
-                ),
-                fontSize = 42.sp,
-                fontWeight = FontWeight.Medium
-            )
-        ) {
-            append(text)
-        }
-    }
-
-
 }
-
-@Composable
-fun MyTextField(
-    textValue: String,
-    onValueChanged: (String) -> Unit,
-    onAddClick: () -> Unit,
-) {
-    TextField(
-        value = textValue, onValueChange = {
-            onValueChanged(it)
-        }, modifier = Modifier.fillMaxWidth(),
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
-                modifier = Modifier.clickable {
-                    onAddClick()
-                })
-        }
-    )
-}
-
-
-//val state = viewModel.state.value
-/*
-     Column(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    ) {
-                        items(
-                            state.namesList.size
-                        ) {
-                            Text(text = state.namesList[it])
-                        }
-                    }
-                    MyTextField(
-                        textValue = state.textState,
-                        onValueChanged = {
-                            viewModel.updateText(it)
-                        },
-                        onAddClick = {
-                            viewModel.updateNameList()
-                            viewModel.updateText("")
-                        }
-                    )
-                }
- */
