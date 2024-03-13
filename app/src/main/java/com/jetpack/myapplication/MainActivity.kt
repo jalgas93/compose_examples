@@ -87,72 +87,78 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Compose_1Theme {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    var text by remember {
-                        mutableStateOf("")
-                    }
-
-                    var isPasswordVisible by remember {
-                        mutableStateOf(false)
-                    }
-
-                    val focusRequester = remember {
-                        FocusRequester()
-                    }
-
-                    OutlinedTextField(
-                        value = text,
-                        onValueChange = {
-                            text = it
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(id = androidx.core.R.drawable.ic_call_answer),
-                                contentDescription = null
-                            )
-                        },
-                        trailingIcon = {
-                            TextButton(onClick = {
-                                isPasswordVisible = !isPasswordVisible
-                            }) {
-                                Text(text = if (isPasswordVisible) "Hide" else "Show")
-                            }
-                        },
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
-                            cursorColor = Color.Red,
-
-                            ),
-                        singleLine = true,
-                        placeholder = {
-                            Text(text = "password")
-
-                        },
-                        label = {
-                            Text(text = "password")
-                        },
-                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(
-                            autoCorrect = false,
-                            keyboardType = KeyboardType.NumberPassword,
-                            imeAction = ImeAction.Go
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onGo = {
-                                Log.d("test", "OnGo click")
-                            }
-                        ),
-                        modifier = Modifier.focusRequester(focusRequester)
-                    )
-                    Button(onClick = { focusRequester.requestFocus() }) {
-                        Text(text = "Request focus")
-                    }
-                }
+                LoginScreen()
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun textField(){
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        var text by remember {
+            mutableStateOf("")
+        }
+
+        var isPasswordVisible by remember {
+            mutableStateOf(false)
+        }
+
+        val focusRequester = remember {
+            FocusRequester()
+        }
+
+        OutlinedTextField(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(id = androidx.core.R.drawable.ic_call_answer),
+                    contentDescription = null
+                )
+            },
+            trailingIcon = {
+                TextButton(onClick = {
+                    isPasswordVisible = !isPasswordVisible
+                }) {
+                    Text(text = if (isPasswordVisible) "Hide" else "Show")
+                }
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Transparent,
+                cursorColor = Color.Red,
+
+                ),
+            singleLine = true,
+            placeholder = {
+                Text(text = "password")
+
+            },
+            label = {
+                Text(text = "password")
+            },
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                autoCorrect = false,
+                keyboardType = KeyboardType.NumberPassword,
+                imeAction = ImeAction.Go
+            ),
+            keyboardActions = KeyboardActions(
+                onGo = {
+                    Log.d("test", "OnGo click")
+                }
+            ),
+            modifier = Modifier.focusRequester(focusRequester)
+        )
+        Button(onClick = { focusRequester.requestFocus() }) {
+            Text(text = "Request focus")
         }
     }
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">compose_1</string>
     <string name="land_of_coding">land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding land_of_coding</string>
+    <string name="the_tolet">The Tolet</string>
+    <string name="find_house">Find Your House</string>
+    <string name="login">Login</string>
 </resources>
